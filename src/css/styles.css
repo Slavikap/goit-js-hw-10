@@ -23,3 +23,95 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.flatpickr-input {
+  border-radius: 4px;
+  width: 272px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+button {
+  font-weight: 500;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 16px;
+  background: #4e75ff;
+  border: none;
+  height: 40px;
+}
+button:hover {
+  background-color: #6c8cff;
+}
+
+button:disabled {
+  background-color: #cfcfcf;
+  color: #989898;
+}
+
+.timer {
+  display: flex;
+  gap: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.value {
+  font-size: 40px;
+}
+
+.label {
+  font-size: 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: 360px;
+  gap: 20px;
+}
+
+label:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type='number'] {
+  height: 40px;
+  border-radius: 8px;
+}
+
+input[type='radio'] {
+  border-radius: 8px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.submit-btn {
+  background-color: #989898;
+}
+
+.submit-btn:hover {
+  background-color: crimson;
+}
+
+.wrapper-index {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 100px;
+}
