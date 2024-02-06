@@ -10,14 +10,15 @@ const hoursElement = document.querySelector('[data-hours]');
 const minutesElement = document.querySelector('[data-minutes]');
 const secondsElement = document.querySelector('[data-seconds]');
 
+let countdownInterval;
+let timerStarted = false; // Прапорець, що вказує, чи запущено таймер
+
 window.addEventListener('DOMContentLoaded', () => {
   const currentDate = new Date();
   if (datetimePicker.value && new Date(datetimePicker.value) < currentDate) {
     startButton.disabled = true;
   }
 });
-
-let countdownInterval;
 
 const options = {
   enableTime: true,
@@ -56,6 +57,9 @@ function startCountdown() {
   }
 
   updateTimerUI(timeDifference);
+  startButton.disabled = true;
+  datetimePicker.disabled = true;
+  timerStarted = true; 
 
   countdownInterval = setInterval(() => {
     const currentTime = new Date().getTime();
@@ -64,6 +68,7 @@ function startCountdown() {
     if (newTimeDifference <= 0) {
       clearInterval(countdownInterval);
       startButton.disabled = true;
+      timerStarted = false; 
       return;
     }
 
@@ -104,5 +109,6 @@ function convertMs(ms) {
 
 startButton.addEventListener('click', () => {
   startCountdown();
-  startButton.disabled = true;
 });
+
+
