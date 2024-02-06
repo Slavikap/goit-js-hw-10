@@ -46,9 +46,11 @@ const options = {
 flatpickr(datetimePicker, options);
 
 function startCountdown() {
+  if (timerStarted) return; // Якщо таймер вже запущено, виходимо з функції
+  timerStarted = true; // Позначаємо, що таймер запущено
   const userSelectedDate = new Date(datetimePicker.value).getTime();
   const currentDate = new Date().getTime();
-  const timeDifference = userSelectedDate - currentDate;
+  let timeDifference = userSelectedDate - currentDate;
 
   if (timeDifference <= 0) {
     clearInterval(countdownInterval);
@@ -56,38 +58,39 @@ function startCountdown() {
     return;
   }
 
-  updateTimerUI(timeDifference);
-  startButton.disabled = true;
-  datetimePicker.disabled = true;
-  timerStarted = true; 
+  // Блокуємо можливість змінювати дату під час роботи таймера
+  datetimePicker.setAttribute('disabled', true);
 
-  countdownInterval = setInterval(() => {
-    const currentTime = new Date().getTime();
-    const newTimeDifference = userSelectedDate - currentTime;
-
-    if (newTimeDifference <= 0) {
-      clearInterval(countdownInterval);
-      startButton.disabled = true;
-      timerStarted = false; 
+  function updateTimerUI(timeDifference) {
+    if (timeDifference <= 0) {
+      daysElement.innerText = '00';
+      hoursElement.innerText = '00';
+      minutesElement.innerText = '00';
+      secondsElement.innerText = '00';
+      startButton.disabled = false; // Після закінчення таймера кнопку робимо активною
+      datetimePicker.removeAttribute('disabled'); // Розблоковуємо можливість вибору нової дати
       return;
     }
-
-    updateTimerUI(newTimeDifference);
-  }, 1000);
-}
-
-function updateTimerUI(timeDifference) {
-  if (timeDifference <= 0) {
-    startButton.disabled = true;
-    return;
+  
+    const { days, hours, minutes, seconds } = convertMs(timeDifference);
+    daysElement.innerText = addLeadingZero(days);
+    hoursElement.innerText = addLeadingZero(hours);
+    minutesElement.innerText = addLeadingZero(minutes);
+    secondsElement.innerText = addLeadingZero(seconds);
   }
 
-  const { days, hours, minutes, seconds } = convertMs(timeDifference);
-  daysElement.innerText = addLeadingZero(days);
-  hoursElement.innerText = addLeadingZero(hours);
-  minutesElement.innerText = addLeadingZero(minutes);
-  secondsElement.innerText = addLeadingZero(seconds);
-}
+  countdownInterval = setInterval(() => {
+    timeDifference -= 1000; // Зменшуємо різницю на 1 секунду
+    if (timeDifference <= 0) {
+      clearInterval(countdownInterval);
+      startButton.disabled = true;
+      updateTimerUI(0); // Оновлюємо інтерфейс, показуючи 00:00:00
+      timerStarted = false; // Позначаємо, що таймер зупинено
+      return;
+    }
+    updateTimerUI(timeDifference);
+  }, 1000);
+}  
 
 function addLeadingZero(value) {
   return value < 10 ? `0${value}` : `${value}`;
@@ -109,6 +112,5 @@ function convertMs(ms) {
 
 startButton.addEventListener('click', () => {
   startCountdown();
+  startButton.disabled = true; // При кожному натисканні кнопку робимо неактивною
 });
-
-
