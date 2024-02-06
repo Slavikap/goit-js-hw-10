@@ -11,7 +11,7 @@ const minutesElement = document.querySelector('[data-minutes]');
 const secondsElement = document.querySelector('[data-seconds]');
 
 let countdownInterval;
-let timerStarted = false; // Прапорець, що вказує, чи запущено таймер
+let timerStarted = false; 
 
 window.addEventListener('DOMContentLoaded', () => {
   const currentDate = new Date();
@@ -46,8 +46,8 @@ const options = {
 flatpickr(datetimePicker, options);
 
 function startCountdown() {
-  if (timerStarted) return; // Якщо таймер вже запущено, виходимо з функції
-  timerStarted = true; // Позначаємо, що таймер запущено
+  if (timerStarted) return; 
+  timerStarted = true; 
   const userSelectedDate = new Date(datetimePicker.value).getTime();
   const currentDate = new Date().getTime();
   let timeDifference = userSelectedDate - currentDate;
@@ -58,7 +58,7 @@ function startCountdown() {
     return;
   }
 
-  // Блокуємо можливість змінювати дату під час роботи таймера
+
   datetimePicker.setAttribute('disabled', true);
 
   function updateTimerUI(timeDifference) {
@@ -67,8 +67,8 @@ function startCountdown() {
       hoursElement.innerText = '00';
       minutesElement.innerText = '00';
       secondsElement.innerText = '00';
-      startButton.disabled = false; // Після закінчення таймера кнопку робимо активною
-      datetimePicker.removeAttribute('disabled'); // Розблоковуємо можливість вибору нової дати
+      startButton.disabled = false; 
+      datetimePicker.removeAttribute('disabled'); 
       return;
     }
   
@@ -80,12 +80,12 @@ function startCountdown() {
   }
 
   countdownInterval = setInterval(() => {
-    timeDifference -= 1000; // Зменшуємо різницю на 1 секунду
+    timeDifference -= 1000; 
     if (timeDifference <= 0) {
       clearInterval(countdownInterval);
       startButton.disabled = true;
-      updateTimerUI(0); // Оновлюємо інтерфейс, показуючи 00:00:00
-      timerStarted = false; // Позначаємо, що таймер зупинено
+      updateTimerUI(0); 
+      timerStarted = false; 
       return;
     }
     updateTimerUI(timeDifference);
@@ -112,5 +112,5 @@ function convertMs(ms) {
 
 startButton.addEventListener('click', () => {
   startCountdown();
-  startButton.disabled = true; // При кожному натисканні кнопку робимо неактивною
+  startButton.disabled = true; 
 });
